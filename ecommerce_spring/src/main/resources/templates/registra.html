@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" th:with="titoloPagina='Registrazione'" layout:decorate="~{layout}">
+
+
+<div class="col-lg-4 col-md-8 col-sm-10 my-5 bg-white p-4 shadow" id="signIn-content"
+style="border-radius:20px;" layout:fragment="registra">
+	<h1 class="text-center">REGISTRAZIONE</h1>
+	<form  th:action="@{server/signIn}" method="post" class="row g-3 mt-5">
+		<div class="col-md-6">
+			<label for="nome" class="form-label">Nome</label>
+			<input type="text" class="form-control" id="nome" name="name" pattern="[A-Za-z]+"
+				title="Il nome deve contenere solo lettere." required />
+		</div>
+		<div class="col-md-6">
+			<label for="cognome" class="form-label">Cognome</label>
+			<input type="text" class="form-control" id="cognome" name="surname" pattern="[A-Za-z]+"
+				title="Il cognome deve contenere solo lettere." required />
+		</div>
+		<div class="col-md-4">
+			<label for="date" class="form-label">Data di nascita</label>
+			<input type="date" class="form-control" id="date" name="birthDate" min="1900-01-01" max=""
+				oninput="this.setCustomValidity(''); if (this.valueAsDate) { let today = new Date(); let eighteenYearsAgo = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()); if (this.valueAsDate > eighteenYearsAgo) this.setCustomValidity('Devi essere maggiorenne per registrarti.'); }"
+				required />
+		</div>
+		<div class="col-md-8">
+			<label for="codicefiscale" class="form-label">Codice Fiscale</label>
+			<input type="text" class="form-control" id="codicefiscale" name="fiscalCode" pattern="[A-Z0-9]{16}"
+				title="Il codice fiscale deve contenere 16 caratteri alfanumerici." required />
+		</div>
+		<div class="col-md-2">
+			<label for="gender" class="form-label">Genere</label>
+			<select id="gender" name="gender" class="form-control" required>
+				<option value="Maschio">Maschio</option>
+				<option value="Femmina">Femmina</option>
+				<option value="Altro">Altro</option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<label for="zipcode" class="form-label">Zipcode</label>
+			<input class="form-control" type="text" id="zipcode" placeholder="zipcode" name="zipCode" pattern="\d{5}"
+				title="Il CAP deve essere un valore numerico di 5 cifre." required />
+		</div>
+		<div class="col-md-4">
+			<label for="address" class="form-label">Address</label>
+			<input class="form-control" type="text" id="address" placeholder="address" name="address"
+				pattern="[A-Za-z0-9\s,.'-]{3,}" title="Inserisci un indirizzo valido." required />
+		</div>
+		<div class="col-md-2">
+			<label for="city" class="form-label">City</label>
+			<input class="form-control" type="text" id="city" placeholder="city" name="city" pattern="[A-Za-z\s]+"
+				title="La città deve contenere solo lettere." required />
+		</div>
+		<div class="col-md-2">
+			<label for="province" class="form-label">Province</label>
+			<input class="form-control" type="text" id="province" placeholder="province" name="province"
+				pattern="[A-Za-z\s]+" title="La provincia deve contenere solo lettere." required />
+		</div>
+		<hr class="mt-5" />
+		<div class="col-md-4">
+			<label for="username" class="form-label">Username</label>
+			<input class="form-control" type="text" id="username" placeholder="username" name="username" maxlength="30"
+				title="L'username non può superare i 30 caratteri." required />
+		</div>
+		<div class="col-md-4">
+			<label for="email" class="form-label">Email</label>
+			<input class="form-control" type="email" id="email" placeholder="email" name="email"
+				pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Inserisci un'email valida." required />
+		</div>
+		<div class="col-md-4">
+			<label for="password" class="form-label">Password</label>
+			<input class="form-control" type="password" id="password" placeholder="password" name="password"
+				required />
+		</div>
+
+		<hr class="mt-5" />
+
+		<div class="col-12">
+			<button  id="bottone" type="submit" class="btn btn-dark w-100">Registrati</button>
+		</div>
+	</form>
+
+	<script>
+
+		/*mettere onsubmit='submit(event)' nel form se vogliamo utilizzare la funzione sotto*/
+		function submit(event) {
+			event.prenventDefault();
+			const nome = document.getElementById('nome').value
+			const cognome = document.getElementById('cognome').value
+			const dataN = document.getElementById('date').value
+			const cf = document.getElementById('codicefiscale').value
+			const genere = document.getElementById('gender').value
+			const zipcode = document.getElementById('zipcode').value
+			const indirizzo = document.getElementById('address').value
+			const citta = document.getElementById('city').value
+			const provincia = document.getElementById('province').value
+			const username = document.getElementById('username').value
+			const email = document.getElementById('email').value
+			const password = document.getElementById('password').value
+
+			console.log(nome, cognome, dataN, cf, genere, zipcode, indirizzo, citta, provincia, username, email, password);
+			const json = {
+				name: nome,
+				surname: cognome,
+				birthDate: dataN,
+				fiscalCode: cf,
+				gender: genere,
+				zipCode: zipcode,
+				address: indirizzo,
+				city: citta,
+				province: provincia,
+				username: username,
+				email: email,
+				password: password
+			}
+			const jsonStringa = JSON.stringify(json);
+
+			fetch('http://localhost:8096/elabora', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: jsonStringa
+			})
+				.then(response => response.json())
+				.then(json => {
+					if (json.success == 'created') {
+						var inviata = /[[${inviata}]]/ 'false';  // Thymeleaf integra il valore nella variabile JavaScript
+						inviata = true;
+						window.location.href = '/';
+
+					} else if (json.success == 'esistente') {
+						var giacreato = /[[${giacreato}]]/ 'false';
+						giacreato = true;
+						window.location.href = '/';
+
+					}
+				})
+		}
+
+
+
+
+
+	</script>
+
+</div>
+
+</html>

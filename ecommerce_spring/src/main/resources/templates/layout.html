@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="'MyWebsite - ' + ${titoloPagina}"></title>
+
+    <!--BOOTSTRAP CDN-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+
+
+    <!--FONT AWESOME CDN-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!--SPLIDE JS CDN-->
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap);
+        @import url(https://fonts.googleapis.com/css?family=Kaushan+Script&display=swap);
+
+        .my-slider-progress {
+            background: #ccc;
+        }
+
+        .my-slider-progress-bar {
+            background: #3fa2ff;
+            height: 2px;
+            transition: width 400ms ease;
+            width: 0;
+        }
+
+
+
+        #image-carousel {
+            max-width: 100vw;
+        }
+
+        @media (max-width: 768px) {
+            #image-carousel .splide__slide {
+                width: 90% !important;
+                /* Puoi regolare la percentuale per fare le immagini più piccole */
+            }
+        }
+
+
+        body {
+            font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial,
+                sans-serif;
+        }
+
+        .navbar a {
+            cursor: pointer;
+        }
+
+        #mainNav {
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important;
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+            transition: padding-top 0.3s, padding-bottom 0.3s;
+            border: none;
+            background-color: transparent;
+            font-size: 0.8rem !important;
+        }
+
+        #mainNav .navbar-brand {
+            color: #fed136;
+            font-family: "Kaushan Script", "Helvetica Neue", Helvetica, Arial,
+                cursive !important;
+        }
+
+        section#contact {
+            background-color: #212529;
+            background-repeat: no-repeat;
+            background-position: center;
+            padding: 50px 25px;
+        }
+
+        section#contact .section-heading {
+            color: #fff;
+        }
+
+        section#contact .form-group {
+            margin-bottom: 25px;
+        }
+
+        section#contact .form-group input,
+        section#contact .form-group textarea {
+            padding: 20px;
+        }
+
+        section#contact .form-group input.form-control {
+            height: auto;
+        }
+
+        section#contact .form-group textarea.form-control {
+            height: 248px;
+        }
+
+        section#contact .form-control:focus {
+            border-color: #fed136;
+            box-shadow: none;
+        }
+
+        section#contact .btn-xl {
+            font-size: 18px;
+            padding: 20px 40px;
+        }
+
+        section#contact .btn-primary {
+            color: #fff;
+            background-color: #fed136;
+            border-color: #fed136;
+        }
+
+        section#contact .btn-primary:active,
+        section#contact .btn-primary:focus,
+        section#contact .btn-primary:hover {
+            background-color: #fec810 !important;
+            border-color: #fec810 !important;
+            color: #fff;
+        }
+
+        section#contact .btn-primary:active,
+        section#contact .btn-primary:focus {
+            box-shadow: 0 0 0 0.2rem rgba(254, 209, 55, 0.5) !important;
+        }
+
+        section#contact .col-md-6 {
+            padding: 0 15px;
+        }
+
+        footer {
+            padding: 25px 0;
+            text-align: center;
+            font-family: "Montserrat", "Helvetica Neue", Helvetica, Arial,
+                sans-serif;
+        }
+
+        footer span.copyright {
+            font-size: 90%;
+            line-height: 40px;
+            text-transform: none;
+        }
+
+        footer ul.quicklinks {
+            font-size: 90%;
+            line-height: 40px;
+            margin-bottom: 0;
+            text-transform: none;
+        }
+
+        footer ul.quicklinks a {
+
+            font-weight: 600;
+            color: #fed136;
+            text-decoration: none;
+            transition: all;
+        }
+
+        footer ul.quicklinks a:active,
+        footer ul.quicklinks a:focus,
+        footer ul.quicklinks a:hover {
+
+
+            color: #fed136;
+            text-decoration: underline;
+        }
+
+        footer ul.social-buttons li a {
+            font-size: 20px;
+            line-height: 40px;
+            display: block;
+            width: 40px;
+            height: 40px;
+            transition: all 0.3s;
+            color: #fff;
+            border-radius: 100%;
+            outline: none;
+            background-color: #fed136;
+            text-decoration: none;
+        }
+
+        footer ul.social-buttons li a:active,
+        footer ul.social-buttons li a:focus,
+        footer ul.social-buttons li a:hover {
+            transform: scale(1.3);
+        }
+
+        footer .list-inline {
+            padding-left: 0;
+            list-style: none;
+        }
+
+        footer .list-inline-item {
+            display: inline-block;
+        }
+
+        .product-card {
+            transition: all 0.3s ease;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            transition: all 0.5s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #6366f1;
+        }
+
+        .btn-custom {
+            background: linear-gradient(45deg, #6366f1, #8b5cf6);
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
+        }
+
+        .search-bar {
+            transition: width 0.3s ease-in-out;
+            width: 200px;
+        }
+
+        .search-bar:focus {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .table-container {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+
+<body
+    th:style="'background: url(' + @{/sfondo.jpg} + ') center center; background-attachment:fixed; background-size: cover;'">
+    <!-- Navbar -->
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-dark navbar-dark mb-0 pb-0 pt-2" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="#page-top">MirkosPakos</a><button data-bs-toggle="collapse"
+                data-bs-target="#navbarResponsive" class="navbar-toggler" type="button" aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <i class="fa fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ms-auto text-uppercase">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/server/readAllProducts}">Home</a>
+                    </li>
+                    <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+                        <a class="nav-link" th:href="@{/server/profile}">Profilo</a>
+                    </li>
+                    <li class="nav-item"
+                        th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'') or hasRole(''ROLE_SADMIN'')')}">
+                        <a class="nav-link" href="/insProd">Inserici Prodotto</a>
+                    </li>
+                    <li class="nav-item"
+                        th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'') or hasRole(''ROLE_SADMIN'')')}">
+                        <a class="nav-link" th:href="@{/server/table1}">Prodotti Registrati</a>
+                    </li>
+                    <li class="nav-item" th:if="${#authorization.expression('hasRole(''ROLE_SADMIN'')')}">
+                        <a class="nav-link" th:href="@{/server/table2}">Utenti Registrati</a>
+                    </li>
+                    <li class="nav-item" >
+                        <a class="nav-link text-primary" th:href="@{/server/readCart}"><i
+                                class="fa-solid fa-cart-shopping text-white fs-5"></i></a>
+                    </li>
+                    <div id="authStatus" th:data-authenticated="${#authorization.expression('isAuthenticated()')}" style="display:none;"></div>
+
+
+                    <li class="nav-item" th:if="${#authorization.expression('!isAuthenticated()')}">
+                        <a class="nav-link text-primary" href="/registra">Registrati</a>
+                    </li>
+                    <li class="nav-item" th:if="${#authorization.expression('isAnonymous()')}">
+                        <a id="login" class="nav-link" data-bs-toggle="modal" data-bs-target="#loginModal"
+                            style="color: rgb(125, 192, 241)">Accedi</a>
+                    </li>
+                    <li class="nav-item" th:if="${#authorization.expression('isAuthenticated()')}">
+                        <form th:action="@{/logout}"  method="post" class="d-inline" id="myForm"  onclick="sessionStorage.removeItem('carrelloInviato')">
+                            <a class="nav-link" onclick="document.getElementById('myForm').submit();"
+                                style="color: rgb(249, 114, 114)">Logout</a>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--ETICHETTE DEI LAYOUT-->
+
+    <div class="container-fluid d-flex justify-content-center align-items-center min-vh-100 py-5">
+        <div layout:fragment="table"></div>
+
+        <div layout:fragment="tableUser"></div>
+
+        <div layout:fragment="home"></div>
+
+        <div layout:fragment="conferma"></div>
+
+        <div layout:fragment="registra"></div>
+
+        <div layout:fragment="insProd"></div>
+
+        <div layout:fragment="profile"></div>
+
+        <div layout:fragment="cart"></div>
+
+
+    </div>
+
+    <!--FOOTER-->
+    <section id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="text-uppercase section-heading fw-bold mb-5">Contattaci</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <form id="contactForm" name="contactForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="name" placeholder="Nome completo *"
+                                        required="" /><small class="form-text text-danger flex-grow-1 lead"></small>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <input type="email" class="form-control" id="emailContact" placeholder="Email *"
+                                        required="" /><small class="form-text text-danger lead"></small>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <input type="tel" class="form-control" placeholder="Telefono *" required="" /><small
+                                        class="form-text text-danger lead"></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <textarea class="form-control" id="message" placeholder="Messaggio *"
+                                        required=""></textarea><small class="form-text text-danger lead"></small>
+                                </div>
+                            </div>
+                            <div class="w-100"></div>
+
+                            <div class="col-lg-12 text-center">
+                                <div id="success"></div>
+                                <button class="btn btn-primary btn-xl text-uppercase" id="sendMessageButton"
+                                    type="submit">
+                                    Invia messaggio
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <span class="copyright">Copyright&nbsp;© MirkosPakos S.R.L</span>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline social-buttons">
+                        <li class="list-inline-item">
+                            <a href="#" class="d-flex align-items-center justify-content-center"><i
+                                    class="fa-brands fa-twitter"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#" class="d-flex align-items-center justify-content-center"><i
+                                    class="fa-brands fa-facebook"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#" class="d-flex align-items-center justify-content-center"><i
+                                    class="fa-brands fa-linkedin"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-inline quicklinks">
+                        <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
+                        <li class="list-inline-item"><a href="#">Terms of Use</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div style="border-radius:20px;" class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-dark" id="loginModalLabel">Login</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/layout}" method="POST">
+                        <div class="mb-3">
+                            <label for="email" class="form-label text-dark">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="Inserisci la tua email"
+                                name="username" />
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label text-dark">Password</label>
+                            <input type="password" class="form-control" id="password"
+                                placeholder="Inserisci la tua password" name="password" />
+                        </div>
+
+                        <div th:if="${param.error}">
+                            <p style="color: red">
+                                Credenziali errate o account non abilitato.
+                            </p>
+                        </div>
+                        <div class="mb-3">
+                            <a href="/registra">Non sei registrato?</a>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark w-100">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" th:inline="javascript">
+        function banB(bnn) {
+            var accountId = bnn.getAttribute("Aid");
+            window.location.href = "/server/banned/" + accountId;
+        }
+
+        function adminB(admin) {
+            var accountId = admin.getAttribute("Aid");
+            window.location.href = "/server/setAdmin/" + accountId;
+        }
+
+    </script>
+</body>
+
+</html>

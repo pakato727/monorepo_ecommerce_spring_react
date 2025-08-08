@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" th:with="titoloPagina='Tabella Utenti'"
+      layout:decorate="~{layout}">
+
+
+<!-- Main Content -->
+<div class="main-content" layout:fragment="tableUser">
+    <h2 style="color: aliceblue;" type="text" id="ricercato" th:text="${ricercato}"></h2>
+
+    <div class="table-container bg-dark shadow-lg p-3 my-5 rounded">
+        <form th:action="@{/server/findUser}" method="GET" class="mb-3 d-flex justify-content-center">
+            <input type="text" name="findUser" class="form-control rounded-pill search-bar pe-5"
+                   placeholder="Digita per cercare..." aria-label="Search">
+        </form>
+
+        <table class="table table-bordered table-striped table-white bg-white">
+            <thead>
+            <tr>
+                <th class="d-none d-md-table-cell">ID Utente</th>
+                <th class="d-none d-md-table-cell">Ruolo</th>
+                <th class="d-none d-md-table-cell">Username</th>
+                <th class="d-none d-md-table-cell">Email</th>
+                <th>Nome</th>
+                <th>Cognome</th>
+                <th class="d-none d-xl-table-cell">Codice Fiscale</th>
+                <th class="d-none d-lg-table-cell">Data di nascita</th>
+                <th class="d-none d-lg-table-cell">Genere</th>
+                <th class="d-none d-xl-table-cell">Indirizzo</th>
+                <th class="d-none d-xl-table-cell">Cap</th>
+                <th class="d-none d-xl-table-cell">Città</th>
+                <th class="d-none d-xl-table-cell">Provincia</th>
+                <th class="d-none d-lg-table-cell">RIMUOVI</th>
+                <th>INFO</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}">
+                <td class="d-none d-sm-table-cell" th:text="${user.id}"></td>
+                <td class="d-none d-md-table-cell" th:text="${user.account.role.ruolo}"></td>
+                <td class="d-none d-md-table-cell" th:text="${user.account.username}"></td>
+                <td class="d-none d-md-table-cell" th:text="${user.account.email}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.surname}"></td>
+                <td class="d-none d-xl-table-cell" th:text="${user.fiscalCode}"></td>
+                <td class="d-none d-lg-table-cell" th:text="${user.birthDate}"></td>
+                <td class="d-none d-lg-table-cell" th:text="${user.gender}"></td>
+                <td class="d-none d-xl-table-cell" th:text="${user.address}"></td>
+                <td class="d-none d-xl-table-cell" th:text="${user.zipCode}"></td>
+                <td class="d-none d-xl-table-cell" th:text="${user.city}"></td>
+                <td class="d-none d-xl-table-cell" th:text="${user.province}"></td>
+                <td class="d-none d-lg-table-cell">
+                    <button class="btn btn-danger w-100" th:attr="data-bs-target='#removeModal-' + ${user.id}"
+                            data-bs-toggle="modal">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-info w-100 text-white" data-bs-toggle="modal"
+                            th:attr="data-bs-target='#userProfileModal-' + ${user.id}">
+                        <i class="fa-solid fa-info"></i>
+                    </button>
+                </td>
+
+                <!-- MODALE RIMUOVI -->
+                <div class="modal fade" th:id="'removeModal-' + ${user.id}" tabindex="-1"
+                     aria-labelledby="removeModalLabel" aria-modal="true" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="removeModalLabel">
+                                    Remove
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form th:action="@{/server/deleteUser/{id}(id=${user.id})}" method="GET">
+                                    <div class="mb-3">
+                                        <p class="text-dark">
+                                            Confermi di voler rimuovere l'utente'
+                                            <strong th:text="${user.name}"></strong>?
+                                        </p>
+                                    </div>
+                                    <button type="submit" class="btn btn-dark w-25">
+                                        Conferma
+                                    </button>
+                                    <button type="button" class="btn btn-dark w-25" data-bs-dismiss="modal">
+                                        Annulla
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--MODALE INFO ACCOUNT/UTENTE-->
+                <div class="modal fade" th:id="'userProfileModal-' + ${user.id}" tabindex="-1"
+                     aria-labelledby="userProfileModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="userProfileModalLabel">
+                                    Profilo Utente
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <ul class="list-group">
+                                    <li class="list-group-item"
+                                        th:utext="'<strong>ID Utente: </strong>' + ${user.id}"></li>
+                                    <li class="list-group-item"
+                                        th:utext="'<strong>Username: </strong>' + ${user.account.username}"></li>
+                                    <li class="list-group-item"
+                                        th:utext="'<strong>Email: </strong>' + ${user.account.email}"></li>
+                                    <li class="list-group-item" th:utext="'<strong>Nome: </strong>' + ${user.name}">
+                                    </li>
+                                    <li class="list-group-item"
+                                        th:utext="'<strong>Cognome: </strong>' + ${user.surname}"></li>
+                                    <li class="list-group-item"
+                                        th:utext="'<strong>Data di Nascita: </strong>' + ${user.birthDate}"></li>
+                                    <li class="list-group-item"
+                                        th:utext="'<strong>Indirizzo: </strong>' + ${user.address}"></li>
+                                    <li class="list-group-item"
+                                        th:utext="'<strong>Città: </strong>' + ${user.city}"></li>
+                                    <li class="list-group-item"
+                                        th:utext="'<strong>Provincia: </strong>' + ${user.province}"></li>
+                                    <li class="list-group-item"
+                                        th:utext="'<strong>Genere: </strong>' + ${user.gender}"></li>
+                                    <li class="list-group-item"
+                                        th:utext="'<strong>Codice Postale: </strong>' + ${user.zipCode}"></li>
+                                    <li class="list-group-item"
+                                        th:utext="'<strong>Codice Fiscale: </strong>' + ${user.fiscalCode}"></li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                                <button th:attr="data-bs-target='#bannedModal-' + ${user.id}" type="button"
+                                        class="btn btn-danger" data-bs-toggle="modal" id="bnnModal"
+                                        th:if="${user.account.role.id!=1}">
+                                    Banna Utente
+                                </button>
+                                <button th:attr="data-bs-target='#adminModal-' + ${user.id}" type="button"
+                                        class="btn btn-danger" data-bs-toggle="modal" id="adminModal"
+                                        th:if="${user.account.role.id != 2 and user.account.role.id != 1}">
+                                    Rendi Admin
+                                </button>
+
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    Chiudi
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modale Banna Utente -->
+                <div class="modal fade" th:id="'bannedModal-' + ${user.id}" tabindex="-1"
+                     aria-labelledby="bannedModalLabel" aria-modal="true" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="bannedModalLabel">
+                                    Ban
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="mb-3">
+                                        <p class="text-dark">
+                                            Confermi di voler bannare l'utente'
+                                            <strong th:text="${user.name}"></strong>?
+                                        </p>
+                                    </div>
+                                    <button th:id="'bnn-'+${user.account.id}" onclick="banB(this)"
+                                            th:attr="Aid=${user.account.id}" type="button" class="btn btn-danger">
+                                        Conferma
+                                    </button>
+                                    <button type="button" class="btn btn-dark w-25" data-bs-dismiss="modal">
+                                        Annulla
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modale admin Utente -->
+                <div class="modal fade" th:id="'adminModal-' + ${user.id}" tabindex="-1"
+                     aria-labelledby="adminModalLabel" aria-modal="true" role="dialog">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title text-dark" id="adminModalLabel">
+                                    Rendi admin
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="mb-3">
+                                        <p class="text-dark">
+                                            Confermi rendere admin l'utente'
+                                            <strong th:text="${user.name}"></strong>?
+                                        </p>
+                                    </div>
+                                    <button th:id="'adminB-'+${user.account.id}" onclick="adminB(this)"
+                                            th:attr="Aid=${user.account.id}" type="button" class="btn btn-danger">
+                                        Conferma
+                                    </button>
+                                    <button type="button" class="btn btn-dark w-25" data-bs-dismiss="modal">
+                                        Annulla
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="w-100 d-flex justify-content-center">
+        <div class="page-group">
+            <a class="btn btn-dark" th:if="${currentPage > 0}"
+               th:href="@{/server/table2(page=${currentPage - 1}, size=10)}">Precedente</a>
+            <span class="btn btn-primary" th:text="'Pagina ' + ${currentPage + 1} + ' di ' + ${totalPages}"></span>
+            <a class="btn btn-dark" th:if="${currentPage < totalPages}"
+               th:href="@{/server/table2(page=${currentPage + 1}, size=10)}">Successiva</a>
+        </div>
+    </div>
+
+
+</div>
+
+</html>

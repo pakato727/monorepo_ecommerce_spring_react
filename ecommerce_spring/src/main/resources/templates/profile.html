@@ -1,0 +1,108 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" th:with="titoloPagina='Tabella Utenti'"
+      layout:decorate="~{layout}">
+
+<div id="profile-content" layout:fragment="profile">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm" th:object="${user}">
+            <div class="card-body p-0">
+                <div class="row g-0">
+
+                    <div class="col-lg-3 border-end">
+                        <div class="p-4">
+                            <div class="nav flex-column nav-pills">
+                                <a class="nav-link active" href="#"><i class="fas fa-user me-2"></i>
+                                    Profilo</a>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-9">
+                        <div class="p-4">
+
+                            <div class="mb-4">
+                                <h5 class="mb-4">Personal Information</h5>
+                                <div class="row g-3">
+                                    <input type="hidden" class="form-control" th:value="${user.id}">
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Nome</label>
+                                        <input type="text" class="form-control" th:value="${user.name}">
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Cognome</label>
+                                        <input type="text" class="form-control" th:value="${user.surname}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Username</label>
+                                        <input type="text" class="form-control" th:value="${user.account.username}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Email</label>
+                                        <input type="text" class="form-control" th:value="${user.account.email}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Data di nascita</label>
+                                        <input type="text" class="form-control" th:value="${user.birthDate}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">codice fiscale</label>
+                                        <input type="text" class="form-control" th:value="${user.fiscalCode}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Indirizzo</label>
+                                        <input type="text" class="form-control" th:value="${user.address}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">codice Zip</label>
+                                        <input type="text" class="form-control" th:value="${user.zipCode}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Citta</label>
+                                        <input type="text" class="form-control" th:value="${user.city}">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Provincia</label>
+                                        <input type="text" class="form-control" th:value="${user.province}">
+                                    </div>
+                                    
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+   <!-- <div class="main-content" >
+        <div class="profile-container shadow-lg p-3 mb-5 rounded" th:object="${user}">
+            <h1>User Profile</h1>
+            <p><strong>Id:</strong> <span th:text="*{id}"></span></p>
+            <p><strong>Name:</strong> <span th:text="*{name}"></span></p>
+            <p><strong>Surname:</strong> <span th:text="*{surname}"></span></p>
+            <p><strong>email:</strong> <span th:text="${user.account.email}"></span></p>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary">Edit</button>
+                <a class="btn btn-secondary">Delete</a>
+            </div>
+        </div>
+
+        <div th:if="${user == null}" class="table-responsive border rounded-0"
+             style="width: 1022px; padding: 0px; position: static; display: inline; overflow: auto; transform: translate(0px);">
+            <p style="font-size: 2rem; text-align: center;">nessun utente trovato</p>
+        </div>
+    </div>
+    -->
+
+   
+</div>
+</html>

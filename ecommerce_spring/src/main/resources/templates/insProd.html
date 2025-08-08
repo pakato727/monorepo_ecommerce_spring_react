@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}" th:with="titoloPagina='Inserimento Prodotti'">
+
+<div class="insProd-content" layout:fragment="insProd">
+	<div class="container mt-5">
+		<div class="card shadow-lg p-4">
+			<h3 class="text-center mb-4">Inserisci Prodotto</h3>
+			<form th:action="@{server/insertProd}" enctype="multipart/form-data" method="post">
+				<div class="row g-3">
+					<!-- Immagine prodotto -->
+					<div class="col-md-6">
+						<label for="file" class="form-label">Img prodotto</label>
+						<input type="file" accept="image/*" class="form-control" id="file" name="file" required>
+					</div>
+	
+					<!-- Nome prodotto -->
+					<div class="col-md-6">
+						<label for="nomeProd" class="form-label">Nome prodotto</label>
+						<input type="text" class="form-control" id="nomeProd" name="nomeProdotto"
+							   pattern="^.{1,30}$" title="Il nome del prodotto deve essere al massimo di 30 caratteri" required>
+					</div>
+	
+					<!-- Descrizione -->
+					<div class="col-md-6">
+						<label for="descrizione" class="form-label">Descrizione</label>
+						<input type="text" class="form-control" id="descrizione" name="descrizione"
+							   pattern="^.{1,50}$" title="La descrizione deve essere al massimo di 50 caratteri" required>
+					</div>
+	
+					<!-- Prezzo -->
+					<div class="col-md-6">
+						<label for="prezzo" class="form-label">Prezzo</label>
+						<input type="text" class="form-control" id="prezzo" placeholder="prezzo" name="prezzo"
+							   pattern="^\d+(\.\d{1,2})?$" title="Il prezzo può contenere solo numeri e un massimo di due cifre decimali" required>
+					</div>
+	
+					<!-- Quantità -->
+					<div class="col-md-6">
+						<label for="quantita" class="form-label">Quantità</label>
+						<input type="text" class="form-control" id="quantita" placeholder="quantita" name="quantita"
+							   pattern="^\d+$" title="La quantità può contenere solo numeri" required>
+					</div>
+	
+					<!-- Categoria -->
+					<div class="col-md-6">
+						<label for="categoria" class="form-label">Categoria</label>
+						<input type="text" class="form-control" id="categoria" name="categoria"
+							   pattern="^.{1,30}$" title="La categoria deve essere al massimo di 30 caratteri" required>
+					</div>
+	
+					<!-- Marca -->
+					<div class="col-md-6">
+						<label for="marca" class="form-label">Marca</label>
+						<input type="text" id="marca" class="form-control" placeholder="marca" name="marca"
+							   pattern="^.{1,30}$" title="La marca deve essere al massimo di 30 caratteri" required>
+					</div>
+	
+					<!-- Bottone di submit -->
+					<div class="col-12 text-center">
+						<button type="submit" class="btn btn-primary btn-lg w-50">Salva Prodotto</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+</div>
+</html>

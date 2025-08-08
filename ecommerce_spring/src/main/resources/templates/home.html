@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}" th:with="titoloPagina='Home'">
+
+<div class="home-content" layout:fragment="home">
+    <div class="mt-5 w-50 container">
+        <div th:if="${successo}" class="alert alert-success" role="alert">
+            ✅ Account verificato con successo!
+        </div>
+        <div th:if="${successo == false}" class="alert alert-danger" role="alert">
+            ❌ Verifica fallita. Token non valido o già usato.
+        </div>
+        <div th:if="${giacreato == true}" class="alert alert-danger" role="alert">
+            ❌ Account gia esistente, per favore accedi.
+        </div>
+        <div th:if="${inviata == true}" class="alert alert-success" role="alert">
+            ✅ Conferma il tuo account dalla mail che ti abbiamo inviato.
+        </div>
+        <div id="popup" th:if="${aggiunto == true}" class="alert alert-success " role="alert">
+            ✅ Prodotto aggiunto con successo al carrello. <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+        <div id="popup2" class="alert alert-success" style="display: none;" role="alert" >
+            ✅ Prodotto aggiunto con successo al carrello. Accedi per visualizzare il carrello. <i
+                class="fa-solid fa-cart-shopping"></i>
+        </div>
+    </div>
+    <div>
+        <h3 class="text-white text-center" th:if="${#authorization.expression('isAuthenticated()')}"
+            th:text="Benvenuto  + '   ' +${name.toUpperCase()}"></h3>
+    </div>
+    <p th:if="${void==false}" class="alert alert-warning">LA LISTA è VUOTA OPPURE MINORE O UGUALE A 5</p>
+    <section th:if="${void}" id="image-carousel" class=" p-5 mt-4 splide"
+        style="background-color: #efeeee; border-radius:20px;">
+        <h1> Novità </h1>
+        <div class="splide__track container  g-4">
+            <ul class="splide__list">
+                <li class=" splide__slide" th:each="i : ${#numbers.sequence(prodotti.size()-1,prodotti.size()-5,-1)}"
+                    th:with="prodotto=${prodotti[i]}">
+                    <div class="product-card bg-white shadow-sm h-100 position-relative d-flex flex-column"
+                        style="border-radius:20px;">
+                        <span class="badge bg-danger">New</span>
+                        <div class="overflow-hidden">
+                            <img class="product-image w-100" th:if="${prodotto.base64Image != null}"
+                                th:src="@{'data:image/jpeg;base64,' + ${prodotto.base64Image}}" alt="Immagine Prodotto"
+                                style="height:250px; object-fit:cover;">
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <h5 class="fw-bold mb-3" th:text="${prodotto.nomeProdotto}"></h5>
+                            <p class="text-muted mb-4 flex-grow-1" th:text="${prodotto.id}"></p>
+                            <p class="text-muted mb-4 flex-grow-1" th:text="${prodotto.descrizione}"></p>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="price"
+                                    th:text="${#numbers.formatDecimal(prodotto.prezzo, 1, 2, 'COMMA')} + ' €'"></span>
+                                <a th:href="@{/server/addCart/{id}(id=${prodotto.id})}" class="btn btn-custom text-white px-4 py-2 rounded-pill">
+                                   Add to Cart
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <hr>
+    <section class=" p-5 mt-4" style="background-color: #efeeee; border-radius:20px;">
+        <div class="container">
+            <div class="row justify-content-center g-4">
+                <div class="col-12 col-sm-6 col-md-4 col-lg-3" th:each="prodotto : ${prodotti}">
+                    <div class="product-card bg-white shadow-sm h-100 position-relative d-flex flex-column"
+                        style="border-radius:20px;">
+                        <div class="overflow-hidden">
+                            <img class="product-image w-100" th:if="${prodotto.base64Image != null}"
+                                th:src="@{'data:image/jpeg;base64,' + ${prodotto.base64Image}}" alt="Immagine Prodotto"
+                                style="height:250px; object-fit:cover;">
+                        </div>
+                        <div class="p-4 d-flex flex-column flex-grow-1">
+                            <h5 class="fw-bold mb-3" th:text="${prodotto.nomeProdotto}"></h5>
+                            <p class="text-muted mb-4 flex-grow-1" th:text="${prodotto.descrizione}"></p>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="price"
+                                    th:text="${#numbers.formatDecimal(prodotto.prezzo, 1, 2, 'COMMA')} + ' €'"></span>
+                                <a th:href="@{/server/addCart/{id}(id=${prodotto.id})}" class="btn btn-custom text-white px-4 py-2 rounded-pill">
+                                    Add to Cart
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            new Splide('#image-carousel', {
+                type: 'loop',
+                perPage: 4,
+                perMove: 1,
+                gap: '1rem',
+                drag: true,
+                pagination: false,
+                breakpoints: {
+                    1024: { perPage: 2, gap: '1rem' },
+                    768: { perPage: 1, gap: '1rem' }
+                }
+            }).mount();
+        });
+
+
+        //popup aggiunzione prodotto
+
+        let aggiunto = [[${ aggiunto }]];
+        if (aggiunto) {
+            mostraPopup();
+        }
+
+
+        function mostraPopup() {
+            const popup = document.getElementById("popup");
+            popup.style.display = "block";
+
+            setTimeout(() => {
+
+                popup.style.display = "none";
+            }, 3000);
+        }
+
+
+        //json per l inserimento prodotti nel carrello salvati nella sessione
+        var carrello = JSON.parse(sessionStorage.getItem("carrello")) || [];
+        var prodotto = [[${ prodottoS }]];
+
+        if (prodotto != null) {
+            carrello.push(prodotto);
+            sessionStorage.setItem("carrello", JSON.stringify(carrello))
+            const popup2 = document.getElementById("popup2");
+            popup2.style.display = "block";
+
+            setTimeout(() => {
+
+                popup2.style.display = "none";
+            }, 3000);
+
+        }
+
+       
+
+        //verifica dal div se la variabile è autenticata, e se cosi, mi manda i prodotti sul database
+
+        const autenticato = document.getElementById('authStatus').dataset.authenticated;
+        let redirectUrl = /*[[@{/server/addStorageToCart}]]*/ '';
+
+        // Verifica che non sia già stato inviato
+        let carrelloInviato = sessionStorage.getItem("carrelloInviato");
+
+        if (autenticato === 'true' && carrello.length > 0 && carrelloInviato !== 'true') {
+        
+
+            let query = new URLSearchParams({
+                carrello: JSON.stringify(carrello)
+            }).toString();
+
+            let fullUrl = `${redirectUrl}?${query}`;
+
+            // Imposta il flag PRIMA del redirect per evitare loop
+            sessionStorage.setItem("carrelloInviato", "true");
+
+            window.location.href = fullUrl;
+        }
+
+
+
+
+
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</div>
+
+</html>

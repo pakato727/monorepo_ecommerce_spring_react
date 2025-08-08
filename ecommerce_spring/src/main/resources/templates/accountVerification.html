@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifica il tuo account</title>
+</head>
+<body style="font-family: Arial, sans-serif; text-align: center;">
+
+    <h2>Benvenuto, <span th:text="${nomeAccount}"></span>!</h2>
+    <p>Grazie per esserti registrato. Per completare la registrazione, clicca sul pulsante qui sotto:</p>
+
+    <a th:href="@{http://localhost:8095/server/accountVerify(token=${token})}"
+       style="display: inline-block; padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">
+       Conferma la Registrazione
+    </a>
+</body>
+</html>

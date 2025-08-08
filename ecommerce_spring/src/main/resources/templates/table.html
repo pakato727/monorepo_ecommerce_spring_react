@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" th:with="titoloPagina='Tabella Prodotti'" layout:decorate="~{layout}">
+
+
+<!-- Main Content -->
+<div id="main-content" layout:fragment="table">
+    <h2 style="color: aliceblue;" type="text" id="ricercato" th:text="${ricercato}" ></h2>
+
+    <div class=" table-container bg-dark shadow-lg p-3 mt-5 rounded ">
+        <form th:action="@{/server/findProd}" method="GET" class="mb-3 d-flex justify-content-center">
+
+            <input type="text"
+                   name="findProd"
+                   class="form-control rounded-pill search-bar pe-5"
+                   placeholder="Digita per cercare..."
+                   aria-label="Search">
+            <!--<button class="btn position-absolute top-50 end-0 translate-middle-y" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+            </button>-->
+
+        </form>
+        <table class="table table-bordered table-hover table-striped table-white bg-white text-center ">
+            <thead>
+            <tr>
+                <th class="d-none d-md-table-cell">ID</th>
+                <th class="d-none d-sm-table-cell">Immagine</th>
+                <th>Nome Prodotto</th>
+                <th class="d-none d-md-table-cell">Descrizione</th>
+                <th class="d-none d-lg-table-cell">Categoria</th>
+                <th>Prezzo</th>
+                <th class="d-none d-lg-table-cell">Quantità</th>
+                <th class="d-none d-lg-table-cell">Marca</th>
+                <th class="d-none d-md-table-cell">Rimuovi</th>
+                <th>Modifica</th>
+                <th class="d-md-none">Info</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="prodotto : ${prodotti}">
+                <td class="d-none d-md-table-cell" th:text="${prodotto.id}"></td>
+
+                <td class="d-none d-sm-table-cell">
+                    <img th:if="${prodotto.base64Image != null}"
+                         th:src="@{'data:image/jpeg;base64,' + ${prodotto.base64Image}}" alt="Immagine Prodotto"
+                         width="100" height="100" />
+                </td>
+                <td th:text="${prodotto.nomeProdotto}"></td>
+                <td class="d-none d-md-table-cell" th:text="${prodotto.descrizione}"></td>
+                <td class="d-none d-lg-table-cell" th:text="${prodotto.categoria}"></td>
+                <td th:text="${prodotto.prezzo}+' €'"></td>
+                <td class="d-none d-lg-table-cell" th:text="${prodotto.quantita}"></td>
+                <td class="d-none d-lg-table-cell" th:text="${prodotto.marca}"></td>
+                <td class="d-none d-md-table-cell">
+                    <button class="btn w-100 btn-danger " th:attr="data-bs-target='#removeModal-' + ${prodotto.id}"
+                            data-bs-toggle="modal">
+                        <i class=" fa-solid fa-trash "></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-primary w-100" th:attr="data-bs-target='#editModal-' + ${prodotto.id}"
+                            data-bs-toggle="modal">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                </td>
+                <td class="d-md-none">
+                    <button class="btn btn-info w-100 text-white"
+                            th:attr="data-bs-target='#infoModal-' + ${prodotto.id}" data-bs-toggle="modal">
+                        <i class="fa-solid fa-info"></i>
+                    </button>
+                </td>
+
+                <td colspan="100">
+                    <div class="modal fade" th:id="'infoModal-' + ${prodotto.id}" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content shadow rounded-4">
+                                <div class="modal-header bg-info text-white">
+                                    <h5 class="modal-title" id="infoModalLabel">Dettagli Prodotto</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                                </div>
+                                <div class="modal-body text-start">
+                                    <img class="img-fluid mb-3"
+                                         th:if="${prodotto.base64Image != null}"
+                                         th:src="@{'data:image/jpeg;base64,' + ${prodotto.base64Image}}"
+                                         alt="Immagine Prodotto" />
+                                    <p><strong>Nome:</strong> <span th:text="${prodotto.nomeProdotto}"></span></p>
+                                    <p><strong>Descrizione:</strong> <span th:text="${prodotto.descrizione}"></span></p>
+                                    <p><strong>Categoria:</strong> <span th:text="${prodotto.categoria}"></span></p>
+                                    <p><strong>Prezzo:</strong> <span th:text="${prodotto.prezzo} + ' €'"></span></p>
+                                    <p><strong>Quantità:</strong> <span th:text="${prodotto.quantita}"></span></p>
+                                    <p><strong>Marca:</strong> <span th:text="${prodotto.marca}"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+
+                <!-- MODALE RIMUOVI -->
+                <div class="modal fade" th:id="'removeModal-' + ${prodotto.id}" tabindex="-1"
+                     aria-labelledby="removeModalLabel" aria-modal="true" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered modal-sm">
+                        <div class="modal-content shadow-lg rounded-4">
+                            <div class="modal-header bg-danger text-white">
+                                <h5 class="modal-title" id="removeModalLabel">Conferma Rimozione</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-4 text-center">
+                                <p class="fw-bold text-dark">
+                                    Sei sicuro di voler rimuovere il prodotto:
+                                    <strong th:text="${prodotto.nomeProdotto}"></strong> ?
+                                </p>
+                            </div>
+                            <div class="modal-footer d-flex flex-column align-items-center">
+                                <form th:action="@{/server/deleteProd/{id}(id=${prodotto.id})}" method="GET" class="w-100">
+                                    <button type="submit" class="btn btn-danger w-50 shadow">Conferma</button>
+                                </form>
+                                <button type="button" class="btn btn-secondary w-50 shadow mt-2" data-bs-dismiss="modal">Annulla</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- MODALE MODIFICA -->
+                <div class="modal fade" th:id="'editModal-' + ${prodotto.id}" tabindex="-1"
+                     aria-labelledby="editModalLabel" aria-modal="true" role="dialog">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content shadow-lg rounded-4">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="editModalLabel">Modifica Prodotto</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body p-4">
+                                <form th:action="@{/server/editProd/{id}(id=${prodotto.id})}" method="POST"
+                                      enctype="multipart/form-data">
+                                    <input type="hidden" name="id" id="edit-id" th:value="${prodotto.id}" />
+
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="edit-img" class="form-label fw-bold">Immagine</label>
+                                            <input type="file" class="form-control" id="edit-img" name="file" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="edit-nomeProdotto" class="form-label fw-bold">Nome
+                                                Prodotto</label>
+                                            <input type="text" class="form-control" id="edit-nomeProdotto"
+                                                   name="nomeProdotto" th:value="${prodotto.nomeProdotto}" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 mt-2">
+                                        <div class="col-12">
+                                            <label for="edit-descrizione"
+                                                   class="form-label fw-bold">Descrizione</label>
+                                            <textarea class="form-control" id="edit-descrizione" name="descrizione"
+                                                      th:text="${prodotto.descrizione}" rows="3"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 mt-2">
+                                        <div class="col-md-4">
+                                            <label for="edit-prezzo" class="form-label fw-bold">Prezzo (€)</label>
+                                            <input type="number" step="0.01" class="form-control" id="edit-prezzo"
+                                                   name="prezzo" th:value="${prodotto.prezzo}" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="edit-quantita" class="form-label fw-bold">Quantità</label>
+                                            <input type="number" class="form-control" id="edit-quantita"
+                                                   name="quantita" th:value="${prodotto.quantita}" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="edit-categoria" class="form-label fw-bold">Categoria</label>
+                                            <input type="text" class="form-control" id="edit-categoria"
+                                                   name="categoria" th:value="${prodotto.categoria}" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 mt-2">
+                                        <div class="col-12">
+                                            <label for="edit-marca" class="form-label fw-bold">Marca</label>
+                                            <input type="text" class="form-control" id="edit-marca" name="marca"
+                                                   th:value="${prodotto.marca}" />
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center mt-4">
+                                        <button type="submit" class="btn btn-success w-45 shadow">Salva
+                                            Modifiche</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div th:if="${#lists.isEmpty(prodotti)}" class="alert alert-warning">
+        <p>Nessun prodotto disponibile.</p>
+    </div>
+
+
+
+    <div class="w-100 d-flex justify-content-center">
+        <div class="page-group">
+            <a class="btn btn-dark" th:if="${currentPage > 0}"
+               th:href="@{/server/table1(page=${currentPage - 1}, size=10)}">Precedente</a>
+            <span class="btn btn-primary" th:text="'Pagina ' + ${currentPage + 1} + ' di ' + ${totalPages}"></span>
+            <a class="btn btn-dark" th:if="${currentPage < totalPages}"  th:href="@{/server/table1(page=${currentPage + 1}, size=20)}">Successiva</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>

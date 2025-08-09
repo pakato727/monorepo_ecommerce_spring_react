@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class Config implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
 
-        registry.addViewController("/").setViewName("redirect:/server/readAllProducts");
+        registry.addViewController("/").setViewName("redirect:/api/products");
         registry.addViewController("/registra").setViewName("registra");
         registry.addViewController("/home").setViewName("home");
         registry.addViewController("/homeAdmin").setViewName("homeAdmin");
@@ -22,7 +22,9 @@ public class Config implements WebMvcConfigurer {
         registry.addViewController("/tableUser").setViewName("tableUser");
         registry.addViewController("/server/banned/").setViewName("server/banned/");
         registry.addViewController("/server/setAdmin/").setViewName("server/setAdmin/");
-        registry.addViewController("/server/readAllProducts").setViewName("server/readAllProducts");
+        // registry.addViewController("/server/readAllProducts").setViewName("server/readAllProducts");
+        registry.addViewController("/api/products").setViewName("api/products");
+
         registry.addViewController("/profileUser").setViewName("profileUser");
         registry.addViewController("/cart").setViewName("cart");
 

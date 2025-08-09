@@ -7,8 +7,9 @@ import Home from './pages/Home.tsx'
 
 import { store } from './redux/store.ts'
 import { Provider } from 'react-redux'
-import RegisterForm from './Component/RegisterForm.tsx'
+import RegisterForm from './component/RegisterForm.tsx'
 import AccountVerification from './pages/AccountVerification.tsx'
+import PermissionByRole from './roleManagement/PermissionByRole.tsx'
 
 
 const router= createBrowserRouter([
@@ -19,6 +20,13 @@ const router= createBrowserRouter([
   {
     path:'/home',
     element: <Home message=""></Home>
+  },
+  {
+    path:'/table-admin-side',
+    element: 
+    <PermissionByRole allowByRole={["SADMIN", "ADMIN"]}>
+      <Home message=""></Home>
+    </PermissionByRole>
   },
   {
     path: '/register',

@@ -19,7 +19,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		String redirectUrl = null;
 
 		for (GrantedAuthority authority : authentication.getAuthorities()) {
-			redirectUrl=(authority.getAuthority().equals("ROLE_BANNED | DELETED")) ? "banned da creare" : "/server/readAllProducts";
+			redirectUrl=(authority.getAuthority().equals("ROLE_BANNED | DELETED")) ? "banned da creare" : "/api/products";
 		}
 
 		if (redirectUrl == null) {

@@ -1,0 +1,11 @@
+# Java - Spring Boot
+/ecommerce_spring/.idea/
+/ecommerce_spring/target
+
+# Node - React Vite
+/react_app_ecommerce_spring/react_app_ecommerce_spring/node_modules
+
+
+# General
+.DS_Store
+.env

@@ -42,19 +42,19 @@ public class WebSecurityConfig {
                 )
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/api/**", "/server/**").permitAll()
 //                        .requestMatchers("server/table2", "/server/banned/", "/setAdmin/").hasRole("SADMIN")
 //                        .requestMatchers("server/profile").authenticated()
 //                        .requestMatchers("homeAdmin", "layout", "server/deleteProd/", "server/editProd/", "server/table1").hasAnyRole("ADMIN", "SADMIN")
                         .anyRequest().authenticated())
                 .formLogin((form) -> form
-                        //.loginPage("/")
+                        .loginPage("/")
                         .successHandler(successHandler)
-                        .failureUrl("/api/getProducts")
+                        .failureUrl("/api/products")
                         .permitAll())
                 .logout((logout) -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/api/getProducts")
+                        .logoutSuccessUrl("/api/products")
                         .permitAll())
                 .userDetailsService(userDetailsService)
                 .sessionManagement(session -> session

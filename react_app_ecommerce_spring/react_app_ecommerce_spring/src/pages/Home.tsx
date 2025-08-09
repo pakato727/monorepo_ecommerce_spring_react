@@ -1,9 +1,9 @@
 import useProducts from "../hooks/useProducts";
 import type { RootState } from '../redux/store';
 import { useSelector } from "react-redux";
-import CardItem from '../Component/CardItem'
+import CardItem from '../component/CardItem'
 import { Store, Filter } from 'lucide-react';
-import Navbar from "../Component/Navbar";
+import Navbar from "../component/Navbar";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 

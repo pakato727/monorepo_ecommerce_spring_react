@@ -13,8 +13,16 @@ const Navbar = () => {
   const auth = useSelector((state: RootState) => state.auth.isLoggedNow);
 
   const handleLogout = async () => {
-
-    dispatch(logout());
+    try {
+      await fetch("http://localhost:8095/logout", {
+        method: "POST",
+        credentials: "include"
+      });
+      dispatch(logout());
+      console.log("Logout riuscito");
+    } catch (err){
+      console.log(err)
+    }
   }
   return (
 

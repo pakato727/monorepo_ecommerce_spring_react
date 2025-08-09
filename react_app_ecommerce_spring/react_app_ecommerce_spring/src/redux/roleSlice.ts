@@ -3,10 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     role: "",
+    roles: [],
 }
 
 const roleSlice = createSlice({
-    name:"role",
+    name:"roles",
     initialState,
     reducers: {
         roleSuper: (state) => {
@@ -21,8 +22,15 @@ const roleSlice = createSlice({
         roleBanned: (state) => {
             state.role = "BANNED"
         },
+        setRole: (state, action)=> {
+            state.roles = action.payload;
+        },
+        clearRole: (state) => {
+            state.roles = [];
+        }
     }
 })
 
-export const {roleAdmin, roleBanned, roleGuest, roleSuper} =  roleSlice.actions;
+// roleAdmin, roleBanned, roleGuest, roleSuper
+export const {roleAdmin, roleBanned, roleGuest, roleSuper, setRole, clearRole} =  roleSlice.actions;
 export const roleReducer = roleSlice.reducer;

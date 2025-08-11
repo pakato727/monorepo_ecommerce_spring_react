@@ -57,11 +57,11 @@ export default function LoginModal({ onClose }: { onClose: () => void }) {
       }
       
       //per far partire l'authSlice che setta lo state.isLoggedNow = true 
-      //(il valore gestisco poi in Home.tsx per i button)
+      //(il valore lo gestisco poi in Home.tsx per i button)
       dispatch(login());
       console.log("Login riuscito");
 
-      //chiudo il modale, altrimenti non funziona il redirect (a riga 65)
+      //chiudo il modale, altrimenti non funziona il redirect (nel navigate dopo)
       onClose();
 
        //Per far partire il redirect alla Home (seguito da un messaggio)

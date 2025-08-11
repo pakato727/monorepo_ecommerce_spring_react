@@ -10,6 +10,7 @@ import { Provider } from 'react-redux'
 import RegisterForm from './component/RegisterForm.tsx'
 import AccountVerification from './pages/AccountVerification.tsx'
 import PermissionByRole from './roleManagement/PermissionByRole.tsx'
+import Error403 from './component/Error403.tsx'
 
 
 const router= createBrowserRouter([
@@ -28,6 +29,12 @@ const router= createBrowserRouter([
       <Home message=""></Home>
     </PermissionByRole>
   },
+  {
+    path:'/unauthorized',
+    element: 
+      <Error403 supportEmail="piccirillopasquale2017@gmail.com" ></Error403>
+  },
+  
   {
     path: '/register',
     element: <RegisterForm></RegisterForm>
